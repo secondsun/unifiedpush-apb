@@ -42,6 +42,12 @@
     name: '{{ postgres_deploymentconfig_name }}'
     namespace: '{{ namespace }}'
     replicas: 1
+    strategy:
+      activeDeadlineSeconds: 21600
+      recreateParams:
+        timeoutSeconds: 600
+      resources: {}
+      type: Recreate
     labels:
       app: '{{ ups_deploymentconfig_name }}' 
       service: '{{ postgres_service_name }}'
@@ -96,7 +102,6 @@
     - name: '{{ postgres_pvc_name }}-data'
       persistent_volume_claim:
         claim_name: '{{ postgres_pvc_name }}'
-
 
 # Check the containers in the Postgres pod and make sure they are all ready
 - name: "Wait for all Postgres containers to become ready"
